@@ -178,3 +178,36 @@ exports.login = (data) =>
             }
         })
     })
+
+exports.googleLogin = (data) =>
+    new Promise((resolve, reject) => {
+        userModel.findOne({ email: data.email }).then(user => {
+            if (user) {
+                resolve({
+                    sukses: true,
+                    msg: 'Berhasil Login dengan Google',
+                    data: user
+                })
+            } else {
+                let newUser = {
+                    username: data.email.split('@')[0],
+                    password: '', 
+                    nama: data.nama || data.email.split('@')[0],
+                    email: data.email,
+                    role: 1
+                }
+                userModel.create(newUser)
+                    .then(createdUser => resolve({
+                        sukses: true,
+                        msg: 'Berhasil mendaftar dan login dengan Google',
+                        data: createdUser
+                    })).catch(() => reject({
+                        sukses: false,
+                        msg: 'Gagal membuat akun'
+                    }))
+            }
+        }).catch(() => reject({
+            sukses: false,
+            msg: 'Terjadi kesalahan pada server'
+        }))
+    })
