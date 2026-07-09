@@ -34,12 +34,22 @@ exports.create = (data) =>
 
                 snap.createTransaction(parameter)
                     .then((transaction)=>{
-                        resolve({
-                            sukses: true,
-                            msg: 'Berhasil Transaksi',
-                            token: transaction.token,
-                            redirect_url: transaction.redirect_url,
-                            order_id: trx._id.toString()
+                        transaksiModel.updateOne(
+                            { _id: trx._id },
+                            { $set: { paymentUrl: transaction.redirect_url } }
+                        ).then(() => {
+                            resolve({
+                                sukses: true,
+                                msg: 'Berhasil Transaksi',
+                                token: transaction.token,
+                                redirect_url: transaction.redirect_url,
+                                order_id: trx._id.toString()
+                            })
+                        }).catch((e) => {
+                            reject({
+                                sukses: false,
+                                msg: 'Gagal menyimpan URL pembayaran: ' + e.message
+                            })
                         })
                     }).catch((e) => {
                         reject({

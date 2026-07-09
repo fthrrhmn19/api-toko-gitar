@@ -28,6 +28,9 @@ const transaksiSchema = new Schema({
     },
     buktiPembayaran:{
         type:String
+    },
+    paymentUrl:{
+        type:String
     }
 })
 
