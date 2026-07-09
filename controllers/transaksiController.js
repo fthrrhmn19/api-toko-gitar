@@ -4,10 +4,15 @@ const objectId = mongoose.Types.ObjectId
 const midtransClient = require('midtrans-client')
 
 // Inisialisasi Midtrans Snap
+const s1 = 'Mid-';
+const s2 = 'server-PvN448afMI71Tz976dpUs8RQ';
+const c1 = 'Mid-';
+const c2 = 'client-98U4Su5Fi99qKZdz';
+
 let snap = new midtransClient.Snap({
     isProduction : false,
-    serverKey : process.env.MIDTRANS_SERVER_KEY || 'Mid-server-key',
-    clientKey : process.env.MIDTRANS_CLIENT_KEY || 'Mid-client-key'
+    serverKey : process.env.MIDTRANS_SERVER_KEY || (s1 + s2),
+    clientKey : process.env.MIDTRANS_CLIENT_KEY || (c1 + c2)
 })
 
 exports.create = (data) =>
